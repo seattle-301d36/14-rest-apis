@@ -74,7 +74,7 @@ var app = app || {};
     })
   };
 
-// COMMENT: What is the purpose of this method?
+// TODO: COMMENT: What is the purpose of this method?
   bookView.initSearchFormPage = () => {
     app.showOnly('.search-view');
 
@@ -82,7 +82,7 @@ var app = app || {};
       // COMMENT: What default behavior is being prevented here?
       event.preventDefault();
 
-      // COMMENT: What is the event.target, below? What will happen if the user does not provide the information needed for the title, author, or isbn properties?
+      // TODO: COMMENT: What is the event.target, below? What will happen if the user does not provide the information needed for the title, author, or isbn properties?
       let book = {
         title: event.target.title.value || '',
         author: event.target.author.value || '',
@@ -91,23 +91,23 @@ var app = app || {};
 
       module.Book.find(book, bookView.initSearchResultsPage);
 
-      // COMMENT: Why are these values set to an empty string?
+      //TODO: COMMENT: Why are these values set to an empty string?
       event.target.title.value = '';
       event.target.author.value = '';
       event.target.isbn.value = '';
     })
   }
 
-  // COMMENT: What is the purpose of this method?
+  //TODO: COMMENT: What is the purpose of this method?
   bookView.initSearchResultsPage = () => {
     app.showOnly('.search-results');
     $('#search-list').empty();
 
-    // COMMENT: Explain how the .forEach() method is being used below.
+    //TODO: COMMENT: Explain how the .forEach() method is being used below.
     module.Book.all.forEach(book => $('#search-list').append(book.toHtml()));
     $('.detail-button a').text('Add to list').attr('href', '/');
     $('.detail-button').on('click', () => {
-      // COMMENT: Explain the following line of code.
+      //TODO: COMMENT: Explain the following line of code.
       module.Book.findOne($(this).parent().parent().parent().data('bookid'))
     });
   }

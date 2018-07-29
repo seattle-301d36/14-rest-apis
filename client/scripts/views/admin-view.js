@@ -12,7 +12,8 @@ var app = app || {};
       event.preventDefault();
       let token = event.target.passphrase.value;
 
-      // COMMENT: Is the token cleared out of local storage? Do you agree or disagree with this structure?
+     
+      //TODO: COMMENT: Is the token cleared out of local storage? Do you agree or disagree with this structure?
       $.get(`${app.ENVIRONMENT.apiUrl}/api/v1/admin`, {token})
         .then(res => {
           if(res) {
