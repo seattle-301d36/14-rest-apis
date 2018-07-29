@@ -70,7 +70,9 @@ app.get('/api/v1/books/find', (req, res) => {
     .catch(console.error)
 })
 
-//TODO: COMMENT: How does this route differ from the route above? What does ':isbn' refer to in the code below?
+//TODOx: COMMENT: How does this route differ from the route above? What does ':isbn' refer to in the code below?
+// This differs from the above as it is a search of the isbn-  The :isbn is the id for the ISBN in the books api - 
+// The returned info is the same but this is for an ISBN search feature that returns a single book
 app.get('/api/v1/books/find/:isbn', (req, res) => {
   let url = 'https://www.googleapis.com/books/v1/volumes';
   superagent.get(url)
