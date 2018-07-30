@@ -11,7 +11,9 @@ const app = express();
 const PORT = process.env.PORT;
 const TOKEN = process.env.TOKEN;
 
-// COMMENT: Explain the following line of code. What is the API_KEY? Where did it come from?
+// TODOx:COMMENT: Explain the following line of code. What is the API_KEY? Where did it come from?
+// The API key comes from the server in this case the key that is used when setting up the  current shell session. It could be saved to a service such as Heroku
+// it is given a variable here so that it is not listed publically  
 const API_KEY = process.env.GOOGLE_API_KEY;
 
 // Database Setup
@@ -28,25 +30,33 @@ app.get('/api/v1/admin', (req, res) => res.send(TOKEN === parseInt(req.query.tok
 app.get('/api/v1/books/find', (req, res) => {
   let url = 'https://www.googleapis.com/books/v1/volumes';
 
-  // COMMENT: Explain the following four lines of code. How is the query built out? What information will be used to create the query?
+  //TODOx: COMMENT: Explain the following four lines of code. How is the query built out? What information will be used to create the query?
+  // This query is using the info obtained in the superagent get using Url  (line 43) and assigning those returned values with concatenation 
+  // if information is responded to the request
   let query = ''
   if(req.query.title) query += `+intitle:${req.query.title}`;
   if(req.query.author) query += `+inauthor:${req.query.author}`;
   if(req.query.isbn) query += `+isbn:${req.query.isbn}`;
 
-  // COMMENT: What is superagent? How is it being used here? What other libraries are available that could be used for the same purpose?
+  //TODOx: COMMENT: What is superagent? How is it being used here? What other libraries are available that could be used for the same purpose?
+  // superagent is a library used for making AJAX requests in the browser and in node.js.  The advantage of this library is that you dont have to parse the JSON out yourself.
+  // Other libraries could be used such as standard HTTP, Request, or Axios 
   superagent.get(url)
     .query({'q': query})
     .query({'key': API_KEY})
     .then(response => response.body.items.map((book, idx) => {
 
-      // COMMENT: The line below is an example of destructuring. Explain destructuring in your own words.
+      //TODOx: COMMENT: The line below is an example of destructuring. Explain destructuring in your own words.
+      // Destructuring allows you to assign the properties of an array or object to variables of a list - 
+      // The variables are in the brackets and these variables are assigned to book.volumeInfo which holds the values to these variables 
       let { title, authors, industryIdentifiers, imageLinks, description } = book.volumeInfo;
 
-      // COMMENT: What is the purpose of the following placeholder image?
+      // TODOx:COMMENT: What is the purpose of the following placeholder image?
+      // placeholder will be run if there is no value assigned to the key imageLinks
       let placeholderImage = 'http://www.newyorkpaddy.com/images/covers/NoCoverAvailable.jpg';
 
-      // COMMENT: Explain how ternary operators are being used below.
+      //TODOx: COMMENT: Explain how ternary operators are being used below.
+      // ternary operators work like if/else logic. for instance in title, if title key has a value that value for title is shown else 'no title available' is shown 
       return {
         title: title ? title : 'No title available',
         author: authors ? authors[0] : 'No authors available',
@@ -60,7 +70,9 @@ app.get('/api/v1/books/find', (req, res) => {
     .catch(console.error)
 })
 
-// COMMENT: How does this route differ from the route above? What does ':isbn' refer to in the code below?
+//TODOx: COMMENT: How does this route differ from the route above? What does ':isbn' refer to in the code below?
+// This differs from the above as it is a search of the isbn-  The :isbn is the id for the ISBN in the books api - 
+// The returned info is the same but this is for an ISBN search feature that returns a single book
 app.get('/api/v1/books/find/:isbn', (req, res) => {
   let url = 'https://www.googleapis.com/books/v1/volumes';
   superagent.get(url)
