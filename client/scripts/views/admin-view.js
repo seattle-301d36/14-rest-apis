@@ -12,7 +12,10 @@ var app = app || {};
       event.preventDefault();
       let token = event.target.passphrase.value;
 
-      // COMMENT: Is the token cleared out of local storage? Do you agree or disagree with this structure?
+     
+      //TODOx: COMMENT: Is the token cleared out of local storage? Do you agree or disagree with this structure?
+      // This is not cleared out of local storage - This would cause possible security issues. 
+      // A possible solution would be to run a localStorage.clear(); attached to a button to "logout "  
       $.get(`${app.ENVIRONMENT.apiUrl}/api/v1/admin`, {token})
         .then(res => {
           if(res) {
