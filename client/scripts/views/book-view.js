@@ -75,14 +75,17 @@ var app = app || {};
   };
 
 // COMMENT: What is the purpose of this method?
+// Tom - This method allows the  user to search for a specific book.
   bookView.initSearchFormPage = () => {
     app.showOnly('.search-view');
 
     $('#search-form').on('submit', function(event) {
       // COMMENT: What default behavior is being prevented here?
+      // Tom - page refresh is being prevented
       event.preventDefault();
 
       // COMMENT: What is the event.target, below? What will happen if the user does not provide the information needed for the title, author, or isbn properties?
+      // The target is the submit button for the form and the values will default to an empty string if a value is not passed through
       let book = {
         title: event.target.title.value || '',
         author: event.target.author.value || '',
@@ -92,6 +95,7 @@ var app = app || {};
       module.Book.find(book, bookView.initSearchResultsPage);
 
       // COMMENT: Why are these values set to an empty string?
+      // Tom - I believe this resets the search form after a search has been submitted
       event.target.title.value = '';
       event.target.author.value = '';
       event.target.isbn.value = '';
@@ -99,15 +103,18 @@ var app = app || {};
   }
 
   // COMMENT: What is the purpose of this method?
+  // Tom - this method displays the search results after a search has been submitted
   bookView.initSearchResultsPage = () => {
     app.showOnly('.search-results');
     $('#search-list').empty();
 
     // COMMENT: Explain how the .forEach() method is being used below.
+    // Tom - I believe this appends all books that match the search into the html and adds a button that allows you to add any books to the users personal list
     module.Book.all.forEach(book => $('#search-list').append(book.toHtml()));
     $('.detail-button a').text('Add to list').attr('href', '/');
     $('.detail-button').on('click', () => {
       // COMMENT: Explain the following line of code.
+      // Tom - this invokes the findOne to find the 3rd level parent of the book that was searched for
       module.Book.findOne($(this).parent().parent().parent().data('bookid'))
     });
   }
