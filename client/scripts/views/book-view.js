@@ -116,7 +116,7 @@ var app = app || {};
     module.Book.all.forEach(book => $('#search-list').append(book.toHtml()));
     $('.detail-button a').text('Add to list').attr('href', '/');
     $('.detail-button').on('click', () => {
-      //TODO: COMMENT: Explain the following line of code.
+      //TODOx: COMMENT: Explain the following line of code.
       // Ater the foreach has run and appended all the onjects form the book.all array, this function looks to find the one onject whose value bookid 
       // matches that of the search form  
       module.Book.findOne($(this).parent().parent().parent().data('bookid'))
