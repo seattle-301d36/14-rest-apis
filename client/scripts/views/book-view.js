@@ -75,14 +75,17 @@ var app = app || {};
   };
 
 // COMMENT: What is the purpose of this method?
+// This method initializes the search form page, which hides all other element and shows only the search view. This is essential if the web page is a SPA.
   bookView.initSearchFormPage = () => {
     app.showOnly('.search-view');
 
     $('#search-form').on('submit', function(event) {
       // COMMENT: What default behavior is being prevented here?
+      // This prevents the submit from refreshing the page.
       event.preventDefault();
 
       // COMMENT: What is the event.target, below? What will happen if the user does not provide the information needed for the title, author, or isbn properties?
+      // event.target is the submit form. If the user leaves any of the fields blank, an empty string will be passed into the value of the key.
       let book = {
         title: event.target.title.value || '',
         author: event.target.author.value || '',
@@ -92,6 +95,7 @@ var app = app || {};
       module.Book.find(book, bookView.initSearchResultsPage);
 
       // COMMENT: Why are these values set to an empty string?
+      // This resets the form to have the search input boxes empty. If this was not here, reloading the page would cause the previous search to persist. That would be annoying.
       event.target.title.value = '';
       event.target.author.value = '';
       event.target.isbn.value = '';
@@ -99,15 +103,18 @@ var app = app || {};
   }
 
   // COMMENT: What is the purpose of this method?
+  // This method initializes the results page for the search. Because the information is being pulled from the server, a new method is required to show the results of the search.
   bookView.initSearchResultsPage = () => {
     app.showOnly('.search-results');
     $('#search-list').empty();
 
     // COMMENT: Explain how the .forEach() method is being used below.
+    // This method appends all the books in Book.all to the search list element. 
     module.Book.all.forEach(book => $('#search-list').append(book.toHtml()));
     $('.detail-button a').text('Add to list').attr('href', '/');
     $('.detail-button').on('click', () => {
       // COMMENT: Explain the following line of code.
+      // This method finds the id of the book after it is clicked on. This data is stored several parent elements up in the dom.
       module.Book.findOne($(this).parent().parent().parent().data('bookid'))
     });
   }
