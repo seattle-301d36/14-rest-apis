@@ -13,6 +13,8 @@ var app = app || {};
       let token = event.target.passphrase.value;
 
       // COMMENT: Is the token cleared out of local storage? Do you agree or disagree with this structure?
+      // Seems like the token itself is coming from line above event.target.passphrase.value. What appears to be in
+      // local storage is just a boolean indicator.
       $.get(`${app.ENVIRONMENT.apiUrl}/api/v1/admin`, {token})
         .then(res => {
           if(res) {
