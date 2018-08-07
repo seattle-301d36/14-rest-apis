@@ -54,14 +54,16 @@ var app = app || {};
       .then(() => page('/'))
       .catch(errorCallback)
 
-  // COMMENT: Where is this method invoked? What is passed in as the 'book' argument when invoked? What callback will be invoked after Book.loadAll is invoked?
+  // DONE: Where is this method invoked? What is passed in as the 'book' argument when invoked? What callback will be invoked after Book.loadAll is invoked?
+  // ANSWER:  This method is invoked in book-view.js, the variable book that holds the values of the user input for the search.
   Book.find = (book, callback) =>
     $.get(`${app.ENVIRONMENT.apiUrl}/api/v1/books/find`, book)
       .then(Book.loadAll)
       .then(callback)
       .catch(errorCallback)
 
-  // COMMENT: Where is this method invoked? How does it differ from the Book.find method, above?
+  // DONE: Where is this method invoked? How does it differ from the Book.find method, above?
+  // ANSWER:  This method is invoked in book-view.js, this method will get the isbn for the book that was selected out of the search list and in book-view.js it will append that chosen book to the DOM.
   Book.findOne = isbn =>
     $.get(`${app.ENVIRONMENT.apiUrl}/api/v1/books/find/${isbn}`)
       .then(Book.create)

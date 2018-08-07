@@ -11,7 +11,8 @@ const app = express();
 const PORT = process.env.PORT;
 const TOKEN = process.env.TOKEN;
 
-// COMMENT: Explain the following line of code. What is the API_KEY? Where did it come from?
+// DONE: Explain the following line of code. What is the API_KEY? Where did it come from?
+// ANSWER:  Here we are storing an API in a const variable so that it is not displayed in the code anywhere as that is not a good thing to do.  The API key is the API token from google that allows this application to make requests to googles API database.
 const API_KEY = process.env.GOOGLE_API_KEY;
 
 // Database Setup
@@ -28,25 +29,30 @@ app.get('/api/v1/admin', (req, res) => res.send(TOKEN === parseInt(req.query.tok
 app.get('/api/v1/books/find', (req, res) => {
   let url = 'https://www.googleapis.com/books/v1/volumes';
 
-  // COMMENT: Explain the following four lines of code. How is the query built out? What information will be used to create the query?
+  // DONE: Explain the following four lines of code. How is the query built out? What information will be used to create the query?
+  // ANSWER: I am not sure here... From what it looks like these line of code will get the request from the searches.
   let query = ''
   if(req.query.title) query += `+intitle:${req.query.title}`;
   if(req.query.author) query += `+inauthor:${req.query.author}`;
   if(req.query.isbn) query += `+isbn:${req.query.isbn}`;
 
-  // COMMENT: What is superagent? How is it being used here? What other libraries are available that could be used for the same purpose?
+  // DONE: What is superagent? How is it being used here? What other libraries are available that could be used for the same purpose?
+  // ANSWER:  superagent is a client side HTTP request library.  Axios.
   superagent.get(url)
     .query({'q': query})
     .query({'key': API_KEY})
     .then(response => response.body.items.map((book, idx) => {
 
-      // COMMENT: The line below is an example of destructuring. Explain destructuring in your own words.
+      // DONE: The line below is an example of destructuring. Explain destructuring in your own words.
+      // ANSWER:  It takes out the properties of the object and gives them a specific value
       let { title, authors, industryIdentifiers, imageLinks, description } = book.volumeInfo;
 
-      // COMMENT: What is the purpose of the following placeholder image?
+      // DONE: What is the purpose of the following placeholder image?
+      // ANSWER:  I am just taking a guess here but if the book selected doesn't have a cover image then this will put a placeholder image in there.
       let placeholderImage = 'http://www.newyorkpaddy.com/images/covers/NoCoverAvailable.jpg';
 
-      // COMMENT: Explain how ternary operators are being used below.
+      // DONE: Explain how ternary operators are being used below.
+      // ANSWER:  This is basically replacing the if/else statement.  For example the first one is saying that if the title is true, return the title, if false then return No title available.
       return {
         title: title ? title : 'No title available',
         author: authors ? authors[0] : 'No authors available',
@@ -60,7 +66,8 @@ app.get('/api/v1/books/find', (req, res) => {
     .catch(console.error)
 })
 
-// COMMENT: How does this route differ from the route above? What does ':isbn' refer to in the code below?
+// DONE: How does this route differ from the route above? What does ':isbn' refer to in the code below?
+// ANSWER: The difference I noticed here is that this one is only using the isbn which is the books serial number i think.  I am not sure on this one so I at least wanted to guess.
 app.get('/api/v1/books/find/:isbn', (req, res) => {
   let url = 'https://www.googleapis.com/books/v1/volumes';
   superagent.get(url)
